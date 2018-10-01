@@ -2,7 +2,7 @@
 
 The inspiration for this project was my inability to use an FTP client remotely when working on CS projects that required I save my work to a campus-hosted server. I built a really terrible solution at the time which did some really janky things and was mostly contained in one enormous echo block, but I recently revisited it and rewrote it from the ground up. 
 
-The biggest challenge was keeping everything in one file while maintaining a decent feature set and preserving readability. The latter was the real challenge. By and large things are well commented, though, I did have to use section comments which I'm not crazy about. There's some cases where things are shoved into one line, but only when it's self explanitory when the formatting doesn't look terrible.
+The biggest challenge was keeping everything in one file while maintaining a decent feature set and preserving readability. The latter was the real challenge. By and large things are well commented, though, I did have to use section comments which I'm not crazy about. There's some cases where things are shoved into one line, but only when it's self explanatory when the formatting doesn't look terrible.
 
 <h2>Features</h2>
 <ul>
