@@ -7,6 +7,7 @@ The biggest challenge was keeping everything in one file while maintaining a dec
 <h2>Features</h2>
 <ul>
   <li>View file list (with FontAwesome icons!)</li>
+  <li>Filter results in file list</li>
   <li>Copy/delete/rename/preview/change permissions</li>
   <li>Drag and drop file movement between directories</li>
   <li>Create new files/folder</li>
