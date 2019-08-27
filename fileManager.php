@@ -297,7 +297,7 @@
 		
 		<script>
 		
-			<!-- Controls whether or not 'edit' option appears in the modal. -->
+			//Controls whether or not 'edit' option appears in the modal.
 			<?php echo (file_exists("toitText.php") ? "editorInstalled = true;\n" : "editorInstalled = false;\n"); ?>
 		
 			//Sorting file directions/criteria
