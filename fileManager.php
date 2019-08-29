@@ -30,10 +30,8 @@
 				
 					//Name
 					$fileDetails[$v]["name"] = str_replace($currentDirectory . "/", "", $fileList[$v]);
-
 					//Directory?
 					$fileDetails[$v]["isDir"] = is_dir($fileList[$v]);
-
 					//In directory -- DELETEME
 					//$fileDetails[$v]["currentDir"] = $currentDirectory;
 					
@@ -385,7 +383,7 @@
 				createBreadcrumbs(dir);
 				
 				//Send AJAX call to retrieve list of files
-				postAjax("fm.php?",{apiCall:true,ls:true,directory:dir,sortBy:[sortKey,orderDir]},function(data) {
+				postAjax("?",{apiCall:true,ls:true,directory:dir,sortBy:[sortKey,orderDir]},function(data) {
 					
 					//Reset table
 					bid("#fileListBody").innerHTML = "";
