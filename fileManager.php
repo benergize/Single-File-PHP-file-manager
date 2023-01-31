@@ -10,16 +10,16 @@
 	
 	//Establish where we are
 	$currentDirectory = getcwd();
-	if($_POST['directory'] != "") { $currentDirectory .= $_POST['directory']; }
+	if(isset($_POST['directory']) && $_POST['directory'] != "") { $currentDirectory .= str_replace("..", "", $_POST['directory']); }
 	
 	/* AJAX responses begin here    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ **
 	** ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-	if(isset($_POST['apiCall'])) {
+	if(isset($_POST['apiCall']) && isset($_SESSION['loggedIn']) && $_SESSION['loggedIn'] === True) {
 		
 		
 		/* File list begins here    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ **
 		** ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-			if(($_POST['ls'])) {
+			if(isset($_POST['ls'])) {
 		
 				//Get all files in the current directory
 				$fileList = glob($currentDirectory . "/*");
@@ -58,7 +58,7 @@
 		
 		/* File previews begin here    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ **
 		** ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-			else if(($_POST['previewFile'])) {
+			else if(isset($_POST['previewFile'])) {
 				
 				$fileName = $currentDirectory . "/" . fileFilter($_POST['fileName']);
 				if(file_exists($fileName)) {
@@ -72,7 +72,7 @@
 		
 		/* Create file or directory begins here    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ **
 		** ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-			else if(($_POST['makeFile'])) {
+			else if(isset($_POST['makeFile'])) {
 				
 				$file = $_POST['fileName'];
 				$destination = $currentDirectory . "/" . fileFilter($_POST['fileName']);
@@ -96,7 +96,7 @@
 		
 		/* Delete file or directory begins here    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ **
 		** ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-			else if(($_POST['deleteFile'])) {
+			else if(isset($_POST['deleteFile'])) {
 				
 				$fileName = $currentDirectory . "/" . fileFilter($_POST['fileName']);
 				
@@ -121,14 +121,14 @@
 		
 		/* Copy file or directory begins here    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ **
 		** ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-			else if(($_POST['copy'])) {
+			else if(isset($_POST['copy'])) {
 				$fileName = $currentDirectory . "/" . fileFilter($_POST['fileName']);
 				$copyName = $currentDirectory . "/" . fileFilter($_POST['copyName']);
 				
 				if(file_exists($fileName)) {
 					if(!file_exists($copyName)) {
 						if(!is_dir($fileName)) { 
-							if(copy($directory . "/" . $fileName,$directory . "/" . $copyName)) {
+							if(copy($fileName, $copyName)) {
 								returnStatus("Successfuly copied file.","success");
 							} else { returnStatus("Copy failed.","fatal"); }
 						} 
@@ -148,10 +148,10 @@
 		
 		/* Move file or directory begins here    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ **
 		** ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-			else if(($_POST['move'])) {
+			else if(isset($_POST['move'])) {
 			
 				$fileName = $currentDirectory . "/" . fileFilter($_POST['fileName']);
-				$newFile = $currentDirectory . "/" . $_POST['newDir'] . "/" . $_POST['fileName'];
+				$newFile = $currentDirectory . "/" . str_replace("..", "", $_POST['newDir']) . "/" . fileFilter($_POST['fileName']);
 				
 				//TODO: Make this better.
 				if(file_exists($fileName)) {
@@ -173,7 +173,7 @@
 	
 		/* Rename file or directory begins here    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ **
 		** ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-			else if(($_POST['rename'])) {
+			else if(isset($_POST['rename'])) {
 				
 				$fileName = $currentDirectory . "/" . fileFilter($_POST['fileName']);
 				$copyName = $currentDirectory . "/" . fileFilter($_POST['copyName']);
@@ -191,7 +191,7 @@
 		
 		/* Permission changes begins here    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ **
 		** ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-			else if(($_POST['changePermissions'])) {
+			else if(isset($_POST['changePermissions'])) {
 				
 				$fileName = $currentDirectory . "/" . fileFilter($_POST['fileName']);
 				$newPermissions = $_POST['newPermissions'];
@@ -214,9 +214,9 @@
 		
 		/* File upload begins here    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ **
 		** ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-			else if(($_POST['fileUpload'])) {
+			else if(isset($_POST['fileUpload'])) {
 				
-				$finalName = $currentDirectory . "/" . basename($_FILES["fileToUpload"]["name"]);
+				$finalName = $currentDirectory . "/" . fileFilter(basename($_FILES["fileToUpload"]["name"]));
 				
 				if(!file_exists($finalName)) {
 					if(move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $finalName)) {
@@ -258,7 +258,7 @@
 		}
 		
 		//If the session didn't get set above, show the login form.
-		if(!$_SESSION['loggedIn']) {
+		if(!isset($_SESSION['loggedIn']) || !$_SESSION['loggedIn']) {
 			
 			die("
 				<form action = '?' method = 'POST'>
