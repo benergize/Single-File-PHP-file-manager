@@ -32,5 +32,11 @@ The biggest challenge was keeping everything in one file while maintaining a dec
 <h2>Credits</h2>
 This project makes use of Bootstrap, jQuery and FontAwesome, as well as a few functions which were created by users on PHP.net and Stack Overflow--These are credited in the source.
 
-<h3>Note:</h3>
-<strong>This has not been extensively tested! I am not liable for lost data! Use at your own risk!</strong>
+<h3>Disclaimer:</h3>
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
